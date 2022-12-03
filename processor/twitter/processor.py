@@ -8,5 +8,5 @@ def process_data(extracted_df):
         return extracted_df
         
 def get_fraud_info(identifier):
-    tweets_df = scrapper.get_tweets(common.KEYWORDS, [identifier], from_time='', to_time='', operator=common.OPERATOR_AND, n=100)
+    tweets_df = scrapper.get_tweets(keywords1=common.KEYWORDS, keywords2=[str(identifier)], from_time='', to_time='', operator=common.OPERATOR_AND, n=100)
     return tweets_df
