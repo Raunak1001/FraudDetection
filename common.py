@@ -7,3 +7,6 @@ USERNMAE = "User Name"
 PLATFROM = "Platform"
 
 TWITTER = "Twitter"
+
+OPERATOR_OR = 'OR'
+OPERATOR_AND = 'AND'
