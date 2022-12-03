@@ -10,3 +10,10 @@ TWITTER = "Twitter"
 
 OPERATOR_OR = 'OR'
 OPERATOR_AND = 'AND'
+
+PHONE_NUMBER = "Phone Number"
+EMAIL = "Email"
+VPA = "VPA"
+IDENTIFIER_TYPE = "Identifier Type"
+IDENTIFIER_VALUE = "Identifier Value"
+SOURCE = "Source"
