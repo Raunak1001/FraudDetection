@@ -17,6 +17,8 @@ def get_number_combinations(phonenumber):
     combinations.append(wrap("91"+phonenumber))
     combinations.append(wrap("0"+phonenumber))
     combinations.append(wrap(phonenumber[:5]+" "+phonenumber[5:]))
+    combinations.append(wrap("0"+phonenumber[:5]+" "+phonenumber[5:]))
+    combinations.append(wrap("0"+phonenumber[:3]+" "+phonenumber[3:6]+" "+phonenumber[6:]))
     return combinations
 
 def wrap(val):
