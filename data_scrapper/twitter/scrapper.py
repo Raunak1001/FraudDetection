@@ -11,6 +11,7 @@ def get_query_for_list(keywords):
     for keyword in keywords:
         if first:
             query = query + keyword
+            first = False
         else:
             query = query + ' OR ' + keyword
     query = query + ')'
