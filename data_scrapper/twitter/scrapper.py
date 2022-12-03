@@ -54,6 +54,6 @@ def get_tweets(keywords1, keywords2=None, from_time=None, to_time=None, operator
 
     tweets_df = pd.DataFrame(attributes_container,
                              columns=[common.TEXT, common.IMAGE_URL, common.SHARE_COUNT, common.LIKE_COUNT,
-                                      common.REPLY_COUNT, common.USERNMAE, common.PLATFROM])
+                                      common.REPLY_COUNT, common.USERNAME, common.PLATFROM])
 
     return tweets_df
