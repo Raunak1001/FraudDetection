@@ -10,7 +10,6 @@ def get_fraud_data(rawTweets):
     result_data = []
     for _, row in rawTweets.iterrows():
         text = row[common.TEXT]
-        print(text)
         phone_numbers = phonenumbers.PhoneNumberMatcher(text, "IN")
         for phone_number in phone_numbers:
             print(phone_number)
