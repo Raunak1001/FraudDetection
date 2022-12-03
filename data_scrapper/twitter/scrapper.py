@@ -50,7 +50,7 @@ def get_tweets(keywords1, keywords2=None, from_time=None, to_time=None, operator
         if i > n:
             break
         attributes_container.append(
-            [tweet.content, '', tweet.retweetCount, tweet.likeCount, tweet.replyCount, tweet.username, common.TWITTER])
+            [tweet.rawContent, '', tweet.retweetCount, tweet.likeCount, tweet.replyCount, tweet.user.username, common.TWITTER])
 
     tweets_df = pd.DataFrame(attributes_container,
                              columns=[common.TEXT, common.IMAGE_URL, common.SHARE_COUNT, common.LIKE_COUNT,

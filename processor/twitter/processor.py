@@ -2,9 +2,15 @@ from data_scrapper.twitter import scrapper
 import common
 
 def process_data(extracted_df):
+    tweets = []
+    scores = []
     for ind,row in extracted_df.iterrows():
         fraud_df = get_fraud_info(get_number_combinations(str(row[common.IDENTIFIER_VALUE])))
-        extracted_df[common.SCORE][ind] = get_score(fraud_df)
+        score, content = get_score_and_content(fraud_df)
+        tweets.append(content)
+        scores.append(score)
+    extracted_df[common.CONTENT] = tweets
+    extracted_df[common.SCORE] = scores  
     return extracted_df
         
 def get_fraud_info(identifier):
@@ -24,8 +30,11 @@ def get_number_combinations(phonenumber):
 def wrap(val):
     return '"'+val+'"'
 
-def get_score(fraud_df):
+def get_score_and_content(fraud_df):
     usernames = {''}
+    content = ""
     for _,row in fraud_df.iterrows():
-        usernames.add(row[common.USERNAME])
-    return len(usernames)-1
+        if row[common.USERNAME] not in usernames:
+            content = content+row[common.TEXT]+"\n"+"******************\n"
+            usernames.add(row[common.USERNAME])
+    return len(usernames)-1, content

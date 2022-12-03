@@ -20,9 +20,11 @@ if __name__ == "__main__":
     else:    
         ch = int(input())
     if ch == 1:
-        tweets_df = scrapper.get_tweets(keywords1=common.KEYWORDS, keywords2=['number','mobile'],from_time=fromDate, to_time=toDate, n=100, operator=common.OPERATOR_AND)
+        tweets_df = scrapper.get_tweets(keywords1=common.KEYWORDS, keywords2=['number','mobile'],from_time=fromDate, to_time=toDate, n=1000, operator=common.OPERATOR_AND, mentions=common.MENTIONS)
         print("********** Got tweets ********")
         extracted_df = data_converter.get_fraud_data(tweets_df)
         print("**** phone numbers ***** {0}".format(extracted_df))
         final_df = processor.process_data(extracted_df)
         print("**** final result ***** {0}".format(extracted_df))
+        final_df = final_df.sort_values(by=[common.SCORE], ascending=False)
+        final_df.to_csv('file1.csv')
