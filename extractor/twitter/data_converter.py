@@ -1,4 +1,5 @@
-from data_scrapper import twitter
+from data_scrapper.twitter import scrapper
 
-data = twitter.get_tweets("from:AnkitChahar21")
-print(data)
+
+if __name__ == "__main__":
+    scrapper.get_tweets()
