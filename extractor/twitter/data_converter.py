@@ -10,7 +10,6 @@ def get_fraud_data(rawTweets):
     result_data = []
     for _, row in rawTweets.iterrows():
         text = row[common.TEXT]
-        print(text)
         phone_numbers = phonenumbers.PhoneNumberMatcher(text, "IN")
         for phone_number in phone_numbers:
             print(phone_number)
@@ -28,7 +27,6 @@ def get_fraud_data(rawTweets):
     return pd.DataFrame(result_data, columns=[common.IDENTIFIER_TYPE, common.IDENTIFIER_VALUE,common.SOURCE, common.SCORE])
 
 def get_attributes_from_regex(regexPattern, input_string):
-    re.fullmatch
     matches = re.finditer(regexPattern, input_string, re.MULTILINE)
     attributes = []
     for match in matches:
