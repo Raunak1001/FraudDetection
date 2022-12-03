@@ -2,6 +2,9 @@ from data_scrapper.twitter import scrapper
 from extractor.twitter import data_converter
 from processor.twitter import processor
 import common
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+
 
 fromDate = ''
 toDate = ''

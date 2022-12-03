@@ -5,6 +5,7 @@ LIKE_COUNT = "Like Count"
 REPLY_COUNT = "Reply Count"
 USERNAME = "User Name"
 PLATFROM = "Platform"
+DATE = "Date"
 
 TWITTER = "Twitter"
 
