@@ -3,26 +3,28 @@ import pandas as pd
 import common
 
 
-def get_query_for_list(keywords):
+def get_query_for_list(keywords, prefix=''):
     if keywords is None:
         return ''
     query = '('
     first = True
     for keyword in keywords:
         if first:
-            query = query + keyword
+            query = query + prefix + keyword
             first = False
         else:
-            query = query + ' OR ' + keyword
+            query = query + ' OR ' + prefix + keyword
     query = query + ')'
     return query
 
 
-def get_tweets(keywords1, keywords2=None, from_time=None, to_time=None, operator=None, n=None):
+def get_tweets(keywords1, keywords2=None, from_time=None, to_time=None, operator=None, n=None, mentions=None):
+    pd.set_option('display.max_colwidth', None)
+
     if operator is None or operator == '':
         operator = common.OPERATOR_OR
     if n is None:
-        n=10000
+        n = 10000
     attributes_container = []
     query = get_query_for_list(keywords1)
     keyword_query = get_query_for_list(keywords2)
@@ -30,6 +32,13 @@ def get_tweets(keywords1, keywords2=None, from_time=None, to_time=None, operator
         query = keyword_query
     elif keyword_query != '':
         query = query + ' ' + operator + ' ' + keyword_query
+
+    if mentions is not None:
+        query = '(' + query + ')'
+        mention_query = get_query_for_list(mentions, '@')
+        query = query + ' AND ' + mention_query
+        mention_query = get_query_for_list(mentions, '-from:')
+        query = query + ' AND ' + mention_query
 
     if from_time is not None and from_time != '':
         query = query + ' AND (since:' + from_time + ')'
