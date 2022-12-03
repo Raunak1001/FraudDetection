@@ -1,1 +1,1 @@
-twitter_scraper
+snscrape
