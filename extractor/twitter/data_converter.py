@@ -11,19 +11,18 @@ def get_fraud_data(rawTweets):
     for _, row in rawTweets.iterrows():
         text = row['Text']
         phone_numbers = phonenumbers.PhoneNumberMatcher(text, "IN")
-        if len(phone_numbers) > 0:
-            for phone_number in phone_numbers:
-                result_data.append([common.PHONE_NUMBER, phone_number, common.Twitter])
+        for phone_number in phone_numbers:
+            result_data.append([common.PHONE_NUMBER, phone_number.number.national_number, common.TWITTER])
         
         fraud_mails = get_attributes_from_regex(emailRegex, text)
         if len(fraud_mails)>0:
             for fraud_mail in fraud_mails:
-                result_data.append([common.EMAIL, fraud_mail, common.Twitter])
+                result_data.append([common.EMAIL, fraud_mail, common.TWITTER])
         
         fraud_vpas = get_attributes_from_regex(vpaRegex, text)
         if len(fraud_vpas)>0:
             for fraud_vpa in fraud_vpas:
-                result_data.append([common.VPA, fraud_vpa, common.Twitter])
+                result_data.append([common.VPA, fraud_vpa, common.TWITTER])
     return pd.DataFrame(result_data, columns=[common.IDENTIFIER_TYPE, common.IDENTIFIER_VALUE,common.SOURCE])
 
 def get_attributes_from_regex(regexPattern, input_string):
