@@ -45,7 +45,7 @@ def get_tweets(keywords1, keywords2=None, from_time=None, to_time=None, operator
 
     if to_time is not None and to_time != '':
         query = query + ' AND (until:' + to_time + ')'
-    print(query)
+
     for i, tweet in enumerate(sntwitter.TwitterSearchScraper(query).get_items()):
         if i > n:
             break
