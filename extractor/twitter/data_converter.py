@@ -13,7 +13,7 @@ def get_fraud_data(rawTweets):
         phone_numbers = phonenumbers.PhoneNumberMatcher(text, "IN")
         for phone_number in phone_numbers:
             print(phone_number)
-            result_data.append([common.PHONE_NUMBER, phone_number.raw_string, common.TWITTER, 0])
+            result_data.append([common.PHONE_NUMBER, phone_number.number.national_number, common.TWITTER, 0])
         
         fraud_mails = get_attributes_from_regex(emailRegex, text)
         if len(fraud_mails)>0:
