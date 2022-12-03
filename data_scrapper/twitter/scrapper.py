@@ -2,6 +2,8 @@ import snscrape.modules.twitter as sntwitter
 import pandas as pd
 import common
 
+pd.options.mode.chained_assignment = None
+
 
 def get_query_for_list(keywords, prefix=''):
     if keywords is None:
@@ -45,6 +47,8 @@ def get_tweets(keywords1, keywords2=None, from_time=None, to_time=None, operator
 
     if to_time is not None and to_time != '':
         query = query + ' AND (until:' + to_time + ')'
+
+    # query = query + 'AND (filter:verified)'
 
     for i, tweet in enumerate(sntwitter.TwitterSearchScraper(query).get_items()):
         if i > n:
