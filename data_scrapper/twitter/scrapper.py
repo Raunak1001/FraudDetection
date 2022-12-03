@@ -1,5 +1,6 @@
 import snscrape.modules.twitter as sntwitter
 import pandas as pd
+import common
 
 
 def get_query_for_list(keywrods):
@@ -34,12 +35,13 @@ def get_tweets(keywrods, usernames, from_time, to_time):
     for i, tweet in enumerate(sntwitter.TwitterSearchScraper(query).get_items()):
         if i > 100:
             break
-        attributes_container.append([tweet.date, tweet.likeCount, tweet.retweetCount, tweet.username, tweet.content])
+        attributes_container.append(
+            [tweet.content, '', tweet.retweetCount, tweet.likeCount, tweet.replyCount, tweet.username, common.TWITTER])
 
     tweets_df = pd.DataFrame(attributes_container,
-                             columns=["Date Created", "Number of Likes", "Retweet Count", "User Name", "Tweets"])
+                             columns=[common.TEXT, common.IMAGE_URL, common.SHARE_COUNT, common.LIKE_COUNT,
+                                      common.REPLY_COUNT, common.USERNMAE, common.PLATFROM])
 
     print(tweets_df)
 
 
-# get_tweets(["fraud", "scam"], ["Ankit"], '2022-07-06', '2022-07-08')
