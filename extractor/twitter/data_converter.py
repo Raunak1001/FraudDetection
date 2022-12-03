@@ -1,32 +1,35 @@
-from data_scrapper.twitter import scrapper
 import pandas as pd
 import re
+import common
+import phonenumbers
 
-phoneNumberRegex = '^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[789]\d{9}|(\d[ -]?){10}\d$'
 emailRegex = "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
 vpaRegex = "^([a-zA-Z0-9]+([\-.]*[a-zA-Z0-9]+)*)@([a-zA-Z0-9]+([\-.]{1}[a-zA-Z0-9]+)*)$"
 
-def get_fraud_data(rawTweets) -> pd.DataFrame:
+def get_fraud_data(rawTweets):
+    result_data = []
     for _, row in rawTweets.iterrows():
         text = row['Text']
-        c = re.compile(phoneNumberRegex)
-        test = re.findall(c, text)
-        print(test)
-        if len(test) > 0:
-            print(text)
-            break
-        # for i in phoneNumbers:
-        #     print(text)
-        #     print('phone', phoneNumbers)
-        #     break
-        # emails = re.findall(emailRegex, text)
-        # for i in emails:
-        #     print(text)
-        #     print('mail', emails)
-        #     break
-        # VPAs = re.findall(vpaRegex, text)
-        # for i in VPAs:
-        #     print(text)
-        #     print('vpa', VPAs)
-        #     break
-    return None
+        phone_numbers = phonenumbers.PhoneNumberMatcher(text, "IN")
+        if len(phone_numbers) > 0:
+            for phone_number in phone_numbers:
+                result_data.append([common.PHONE_NUMBER, phone_number, common.Twitter])
+        
+        fraud_mails = get_attributes_from_regex(emailRegex, text)
+        if len(fraud_mails)>0:
+            for fraud_mail in fraud_mails:
+                result_data.append([common.EMAIL, fraud_mail, common.Twitter])
+        
+        fraud_vpas = get_attributes_from_regex(vpaRegex, text)
+        if len(fraud_vpas)>0:
+            for fraud_vpa in fraud_vpas:
+                result_data.append([common.VPA, fraud_vpa, common.Twitter])
+    return pd.DataFrame(result_data, columns=[common.IDENTIFIER_TYPE, common.IDENTIFIER_VALUE,common.SOURCE])
+
+def get_attributes_from_regex(regexPattern, input_string):
+    re.fullmatch
+    matches = re.finditer(regexPattern, input_string, re.MULTILINE)
+    attributes = []
+    for match in matches:
+        attributes.append(match.group())
+    return attributes
