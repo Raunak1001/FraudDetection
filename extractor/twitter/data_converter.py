@@ -9,9 +9,11 @@ vpaRegex = "^([a-zA-Z0-9]+([\-.]*[a-zA-Z0-9]+)*)@([a-zA-Z0-9]+([\-.]{1}[a-zA-Z0-
 def get_fraud_data(rawTweets):
     result_data = []
     for _, row in rawTweets.iterrows():
-        text = row['Text']
+        text = row[common.TEXT]
+        print(text)
         phone_numbers = phonenumbers.PhoneNumberMatcher(text, "IN")
         for phone_number in phone_numbers:
+            print(phone_number)
             result_data.append([common.PHONE_NUMBER, phone_number.number.national_number, common.TWITTER])
         
         fraud_mails = get_attributes_from_regex(emailRegex, text)
