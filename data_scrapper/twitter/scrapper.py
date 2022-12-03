@@ -17,9 +17,11 @@ def get_query_for_list(keywords):
     return query
 
 
-def get_tweets(keywords1, keywords2=None, from_time=None, to_time=None, operator=None):
+def get_tweets(keywords1, keywords2=None, from_time=None, to_time=None, operator=None, n=None):
     if operator is None or operator == '':
         operator = common.OPERATOR_OR
+    if n is None:
+        n=10000
     attributes_container = []
     query = get_query_for_list(keywords1)
     keyword_query = get_query_for_list(keywords2)
@@ -35,7 +37,7 @@ def get_tweets(keywords1, keywords2=None, from_time=None, to_time=None, operator
         query = query + ' AND (until:' + to_time + ')'
     print(query)
     for i, tweet in enumerate(sntwitter.TwitterSearchScraper(query).get_items()):
-        if i > 100:
+        if i > n:
             break
         attributes_container.append(
             [tweet.content, '', tweet.retweetCount, tweet.likeCount, tweet.replyCount, tweet.username, common.TWITTER])
