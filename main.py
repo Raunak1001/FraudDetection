@@ -56,7 +56,7 @@ if __name__ == "__main__":
                                    args=(i, from_time.strftime('%Y-%m-%d'), new_to_time.strftime('%Y-%m-%d'), common.TWEET_COUNT,)))
             if new_to_time > to_time:
                 new_to_time = to_time
-            if count % 10 == 0:
+            if count % 15 == 0:
                 count = 0
                 for thread in threads:
                     thread.start()
