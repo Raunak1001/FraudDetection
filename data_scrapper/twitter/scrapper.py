@@ -130,18 +130,16 @@ def scrape_tweets_sync(keywords1, keywords2=None, from_time=None, to_time=None, 
     if to_time is not None and to_time != '':
         query = query + ' AND (until:' + to_time + ')'
 
-    # query = query + 'AND (filter:verified)'
-
     for i, tweet in enumerate(sntwitter.TwitterSearchScraper(query).get_items()):
         if i > n:
             break
         attributes_container.append(
             [tweet.content, '', tweet.retweetCount, tweet.likeCount, tweet.replyCount, tweet.user.username, common.TWITTER,
-             tweet.date, tweet.user.verified, tweet.user.followersCount])
+             tweet.date, tweet.user.verified, tweet.user.followersCount, tweet.url])
 
     tweets_df = pd.DataFrame(attributes_container,
                              columns=[common.TEXT, common.IMAGE_URL, common.SHARE_COUNT, common.LIKE_COUNT,
-                                      common.REPLY_COUNT, common.USERNAME, common.PLATFROM, common.DATE, common.VERIFIED, common.FOLLOWER_COUNT])
+                                      common.REPLY_COUNT, common.USERNAME, common.PLATFROM, common.DATE, common.VERIFIED, common.FOLLOWER_COUNT, common.TWEET_URL])
     return tweets_df
 
 def fill_media_content(tweets_df):
