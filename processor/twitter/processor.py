@@ -1,4 +1,5 @@
 import threading
+import time
 
 import pandas as pd
 
@@ -20,6 +21,7 @@ def process_data(extracted_df):
 
             for thread in threads:
                 thread.join()
+            time.sleep(0.25)
     return extracted_df
 
 
