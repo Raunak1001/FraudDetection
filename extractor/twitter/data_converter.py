@@ -21,7 +21,7 @@ def get_fraud_data(rawTweets):
         for phone_number in phone_numbers:
             if phone_number.number.national_number in unique_phone_numbers:
                 continue
-            if str(phone_number.number.national_number)[:1:] in whiteList:
+            if str(phone_number.number.national_number)[:1:] not in whiteList:
                 continue
             result_data.append([common.PHONE_NUMBER, phone_number.number.national_number, common.TWITTER, 0,'', 0, 0, 0, '', ''])
             unique_phone_numbers.append(phone_number.number.national_number)
