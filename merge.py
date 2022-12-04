@@ -5,7 +5,7 @@ import common
 
 path = os.getcwd()
 print(path)
-csv_files = glob.glob(os.path.join(path+"/", "*1.csv"))
+csv_files = glob.glob(os.path.join(path+"/", "*.csv"))
 uniq_vals = {''}
 final_result = []
 
@@ -26,4 +26,5 @@ def merge():
                         common.VERIFIED_SCORE, common.FOLLOWERS_SCORE, common.FINAL_SCORE, common.TWEET_URL, common.CONTENT])
     final_df.to_csv('merge.csv')
 
-merge()
+if __name__ == "__main__":
+    merge()
