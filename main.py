@@ -29,3 +29,5 @@ if __name__ == "__main__":
         print("**** phone numbers ***** {0}".format(extracted_df))
         final_df = processor.process_data(extracted_df)
         print("**** final result ***** {0}".format(extracted_df))
+        final_df = final_df.sort_values(by=[common.SCORE], ascending=False)
+        final_df.to_csv('file1.csv')
