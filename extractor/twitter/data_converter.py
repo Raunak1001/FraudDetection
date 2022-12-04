@@ -41,6 +41,7 @@ def get_fraud_data(rawTweets):
 
 
 def get_attributes_from_regex(regexPattern, input_string):
+    re.compile(regexPattern)
     matches = re.finditer(regexPattern, input_string, re.MULTILINE)
     attributes = []
     for match in matches:
