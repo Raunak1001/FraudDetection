@@ -86,20 +86,21 @@ def scrape_tweets(keywords1, keywords2=None, from_time=None, to_time=None, opera
         if i > n:
             break
         
-        media_content = ""
-        # if tweet.media:
-        #     media_content = "\n"+get_data_from_media(tweet.media)
+        url = ""
+        try:
+            url = tweet.media[0].fullUrl # .previewUrl if you want previewUrl
+        except:
+            pass
 
         attributes_container.append(
-            [tweet.content+media_content, '', tweet.retweetCount, tweet.likeCount, tweet.replyCount, tweet.user.username, common.TWITTER,
+            [tweet.content, url, tweet.retweetCount, tweet.likeCount, tweet.replyCount, tweet.user.username, common.TWITTER,
              tweet.date, tweet.user.verified, tweet.user.followersCount])
 
     tweets_df = pd.DataFrame(attributes_container,
                              columns=[common.TEXT, common.IMAGE_URL, common.SHARE_COUNT, common.LIKE_COUNT,
-                                      common.REPLY_COUNT, common.USERNAME, common.PLATFROM, common.DATE, common.VERIFIED, common.FOLLOWER_COUNT])
+                                      common.REPLY_COUNT, common.USERNAME, common.PLATFROM, common.DATE])
     # pd.concat(final_tweet_df, tweets_df)
     final_tweet_df = final_tweet_df.append(tweets_df, ignore_index=True)
-    # print(final_tweet_df)
     return
 
 
@@ -143,16 +144,27 @@ def scrape_tweets_sync(keywords1, keywords2=None, from_time=None, to_time=None, 
                                       common.REPLY_COUNT, common.USERNAME, common.PLATFROM, common.DATE, common.VERIFIED, common.FOLLOWER_COUNT])
     return tweets_df
 
+def fill_media_content(tweets_df):
+    if not common.EXTRACT_MEDIA_CONTENT:
+        return tweets_df
+    
+    threads = []
+    for ind, row in tweets_df.iterrows():
+        url = tweets_df[common.IMAGE_URL][ind]
+        if url=='' or url==None:
+            continue
+        t = threading.Thread(target=extract_data_from_media, args=(url, tweets_df, ind))
+        threads.append(t)
+        t.start()
+    for t in threads:
+        t.join()
 
-def get_data_from_media(media):
-    try:
-      url = media[0].fullUrl # .previewUrl if you want previewUrl
-    except:
-      return ""
+    return tweets_df
 
+
+def extract_data_from_media(url, tweets_df, ind):
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
-
     r = requests.get(url, headers=headers)
     img = Image.open(io.BytesIO(r.content))
-    text = pytesseract.image_to_string(img)
-    return text
+    text = tweets_df[common.TEXT][ind]+"\n"+pytesseract.image_to_string(img)
+    tweets_df[common.TEXT][ind] = text
