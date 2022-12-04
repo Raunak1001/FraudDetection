@@ -12,7 +12,7 @@ def process_data(extracted_df):
     i = 0
     for ind, row in extracted_df.iterrows():
         if ind % 1000 == 0:
-            print("Processing",ind,"th row")
+            print("Processing", ind, "th row")
         t = threading.Thread(target=process_parallel, args=(row, extracted_df, ind))
         threads.append(t)
         i = i + 1
@@ -81,7 +81,8 @@ def get_score_and_content(fraud_df):
     for _, row in fraud_df.iterrows():
         if row[common.USERNAME] not in usernames:
             content = content + row[common.TEXT] + "\n" + "******************\n"
-            urls = urls + "@"+row[common.USERNAME]+" - "+ str(row[common.DATE])+" - "+ row[common.TWEET_URL] + "\n"
+            urls = urls + "@" + row[common.USERNAME] + " - " + str(row[common.DATE]) + " - " + row[
+                common.TWEET_URL] + "\n"
             usernames.add(row[common.USERNAME])
             count = count + 1
             if row[common.VERIFIED]:
@@ -89,12 +90,13 @@ def get_score_and_content(fraud_df):
             followers_count += int(row[common.FOLLOWER_COUNT] / common.FOLLOWER_COUNT_WEIGHTAGE)
     return count, verified_count, followers_count, content, urls
 
+
 def get_fraud_tier(score):
-    if score<=5:
+    if score <= 5:
         return common.LOW_TIER
-    if score<=50:
+    if score <= 50:
         return common.MEDIUM_TIER
-    if score<=100:
+    if score <= 100:
         return common.HIGH_TIER
-    
+
     return common.VERY_HIGH_TIER
