@@ -1,8 +1,13 @@
 import snscrape.modules.twitter as sntwitter
 import pandas as pd
 import common
+import threading
 
 pd.options.mode.chained_assignment = None
+pd.set_option('display.max_colwidth', None)
+
+mentions_batch = 2
+final_tweet_df = pd.DataFrame()
 
 
 def get_query_for_list(keywords, prefix=''):
@@ -21,8 +26,32 @@ def get_query_for_list(keywords, prefix=''):
 
 
 def get_tweets(keywords1, keywords2=None, from_time=None, to_time=None, operator=None, n=None, mentions=None):
-    pd.set_option('display.max_colwidth', None)
+    global final_tweet_df
+    final_tweet_df = pd.DataFrame()
+    if mentions is None or mentions == '' or len(mentions) == 0:
+        scrape_tweets(keywords1, keywords2, from_time, to_time, operator, n, mentions)
+        return final_tweet_df
 
+    i = 0
+    threads = []
+    while i < len(mentions):
+        j = min(i + mentions_batch, len(mentions))
+        t = threading.Thread(target=scrape_tweets,
+                             args=(keywords1, keywords2, from_time, to_time, operator, n, mentions[i:j],))
+        threads.append(t)
+        i = j
+    for thread in threads:
+        thread.start()
+
+    for thread in threads:
+        thread.join()
+
+    return final_tweet_df
+
+
+def scrape_tweets(keywords1, keywords2=None, from_time=None, to_time=None, operator=None, n=None, mentions=None):
+    print("Running")
+    global final_tweet_df
     if operator is None or operator == '':
         operator = common.OPERATOR_OR
     if n is None:
@@ -54,10 +83,13 @@ def get_tweets(keywords1, keywords2=None, from_time=None, to_time=None, operator
         if i > n:
             break
         attributes_container.append(
-            [tweet.content, '', tweet.retweetCount, tweet.likeCount, tweet.replyCount, tweet.username, common.TWITTER, tweet.date])
+            [tweet.content, '', tweet.retweetCount, tweet.likeCount, tweet.replyCount, tweet.username, common.TWITTER,
+             tweet.date])
 
     tweets_df = pd.DataFrame(attributes_container,
                              columns=[common.TEXT, common.IMAGE_URL, common.SHARE_COUNT, common.LIKE_COUNT,
                                       common.REPLY_COUNT, common.USERNAME, common.PLATFROM, common.DATE])
-
-    return tweets_df
+    # pd.concat(final_tweet_df, tweets_df)
+    final_tweet_df = final_tweet_df.append(tweets_df, ignore_index=True)
+    # print(final_tweet_df)
+    return
