@@ -8,15 +8,18 @@ import common
 
 def process_data(extracted_df):
     threads = []
+    i = 0
     for ind, row in extracted_df.iterrows():
         t = threading.Thread(target=process_parallel, args=(row, extracted_df, ind))
         threads.append(t)
+        i = i+1
+        if i%100 == 0:
+            i = 0
+            for thread in threads:
+                thread.start()
 
-    for thread in threads:
-        thread.start()
-
-    for thread in threads:
-        thread.join()
+            for thread in threads:
+                thread.join()
     return extracted_df
 
 
