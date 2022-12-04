@@ -13,8 +13,8 @@ def process_data(extracted_df):
     for ind, row in extracted_df.iterrows():
         t = threading.Thread(target=process_parallel, args=(row, extracted_df, ind))
         threads.append(t)
-        i = i+1
-        if i%100 == 0:
+        i = i + 1
+        if i % 100 == 0:
             i = 0
             for thread in threads:
                 thread.start()
@@ -22,6 +22,13 @@ def process_data(extracted_df):
             for thread in threads:
                 thread.join()
             time.sleep(0.25)
+            threads.clear()
+    if i != 0:
+        for thread in threads:
+            thread.start()
+
+        for thread in threads:
+            thread.join()
     return extracted_df
 
 
@@ -57,8 +64,13 @@ def wrap(val):
 def get_score_and_content(fraud_df):
     usernames = {''}
     content = ""
+    count = 0
     for _, row in fraud_df.iterrows():
         if row[common.USERNAME] not in usernames:
             content = content + row[common.TEXT] + "\n" + "******************\n"
             usernames.add(row[common.USERNAME])
-    return len(usernames) - 1, content
+            count = count + 1
+            if row[common.VERIFIED]:
+                count += common.VERIFIED_USER_WEIGHTAGE
+            count += int(row[common.FOLLOWER_COUNT] / common.FOLLOWER_COUNT_WEIGHTAGE)
+    return count, content

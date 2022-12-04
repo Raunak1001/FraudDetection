@@ -6,6 +6,8 @@ REPLY_COUNT = "Reply Count"
 USERNAME = "User Name"
 PLATFROM = "Platform"
 DATE = "Date"
+VERIFIED = "Verified"
+FOLLOWER_COUNT = "Follower Count"
 
 TWITTER = "Twitter"
 
@@ -23,4 +25,7 @@ SOURCE = "Source"
 CONTENT = "content"
 
 MENTIONS_BATCH = 5
-TWEET_COUNT = 100
+TWEET_COUNT = 10
+
+VERIFIED_USER_WEIGHTAGE = 5
+FOLLOWER_COUNT_WEIGHTAGE = 20

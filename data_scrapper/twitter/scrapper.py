@@ -82,12 +82,12 @@ def scrape_tweets(keywords1, keywords2=None, from_time=None, to_time=None, opera
         if i > n:
             break
         attributes_container.append(
-            [tweet.content, '', tweet.retweetCount, tweet.likeCount, tweet.replyCount, tweet.username, common.TWITTER,
-             tweet.date])
+            [tweet.content, '', tweet.retweetCount, tweet.likeCount, tweet.replyCount, tweet.user.username, common.TWITTER,
+             tweet.date, tweet.user.verified, tweet.user.followersCount])
 
     tweets_df = pd.DataFrame(attributes_container,
                              columns=[common.TEXT, common.IMAGE_URL, common.SHARE_COUNT, common.LIKE_COUNT,
-                                      common.REPLY_COUNT, common.USERNAME, common.PLATFROM, common.DATE])
+                                      common.REPLY_COUNT, common.USERNAME, common.PLATFROM, common.DATE, common.VERIFIED, common.FOLLOWER_COUNT])
     # pd.concat(final_tweet_df, tweets_df)
     final_tweet_df = final_tweet_df.append(tweets_df, ignore_index=True)
     # print(final_tweet_df)
@@ -126,10 +126,10 @@ def scrape_tweets_sync(keywords1, keywords2=None, from_time=None, to_time=None, 
         if i > n:
             break
         attributes_container.append(
-            [tweet.content, '', tweet.retweetCount, tweet.likeCount, tweet.replyCount, tweet.username, common.TWITTER,
-             tweet.date])
+            [tweet.content, '', tweet.retweetCount, tweet.likeCount, tweet.replyCount, tweet.user.username, common.TWITTER,
+             tweet.date, tweet.user.verified, tweet.user.followersCount])
 
     tweets_df = pd.DataFrame(attributes_container,
                              columns=[common.TEXT, common.IMAGE_URL, common.SHARE_COUNT, common.LIKE_COUNT,
-                                      common.REPLY_COUNT, common.USERNAME, common.PLATFROM, common.DATE])
+                                      common.REPLY_COUNT, common.USERNAME, common.PLATFROM, common.DATE, common.VERIFIED, common.FOLLOWER_COUNT])
     return tweets_df
