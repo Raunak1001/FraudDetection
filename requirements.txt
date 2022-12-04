@@ -1,3 +1,6 @@
 snscrape
 pandas
 phonenumbers
+pillow
+pytesseract
+requests
