@@ -22,6 +22,7 @@ def process_data(extracted_df):
             for thread in threads:
                 thread.join()
             time.sleep(0.25)
+            threads.clear()
     return extracted_df
 
 
