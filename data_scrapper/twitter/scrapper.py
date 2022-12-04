@@ -7,6 +7,10 @@ pd.options.mode.chained_assignment = None
 pd.set_option('display.max_colwidth', None)
 
 final_tweet_df = pd.DataFrame()
+import requests
+from PIL import Image
+import pytesseract
+import io
 
 
 def get_query_for_list(keywords, prefix=''):
@@ -81,8 +85,13 @@ def scrape_tweets(keywords1, keywords2=None, from_time=None, to_time=None, opera
     for i, tweet in enumerate(sntwitter.TwitterSearchScraper(query).get_items()):
         if i > n:
             break
+        
+        media_content = ""
+        if tweet.media:
+            media_content = "\n"+get_data_from_media(tweet.media)
+
         attributes_container.append(
-            [tweet.content, '', tweet.retweetCount, tweet.likeCount, tweet.replyCount, tweet.user.username, common.TWITTER,
+            [tweet.content+media_content, '', tweet.retweetCount, tweet.likeCount, tweet.replyCount, tweet.user.username, common.TWITTER,
              tweet.date, tweet.user.verified, tweet.user.followersCount])
 
     tweets_df = pd.DataFrame(attributes_container,
@@ -133,3 +142,17 @@ def scrape_tweets_sync(keywords1, keywords2=None, from_time=None, to_time=None, 
                              columns=[common.TEXT, common.IMAGE_URL, common.SHARE_COUNT, common.LIKE_COUNT,
                                       common.REPLY_COUNT, common.USERNAME, common.PLATFROM, common.DATE, common.VERIFIED, common.FOLLOWER_COUNT])
     return tweets_df
+
+
+def get_data_from_media(media):
+    try:
+      url = media[0].fullUrl # .previewUrl if you want previewUrl
+    except:
+      return ""
+
+    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+
+    r = requests.get(url, headers=headers)
+    img = Image.open(io.BytesIO(r.content))
+    text = pytesseract.image_to_string(img)
+    return text

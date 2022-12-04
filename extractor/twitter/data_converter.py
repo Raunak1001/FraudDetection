@@ -13,6 +13,7 @@ def get_fraud_data(rawTweets):
     unique_fraud_mails = []
     unique_fraud_vpas = []
     for _, row in rawTweets.iterrows():
+        print("extracting")
         text = row[common.TEXT]
         phone_numbers = phonenumbers.PhoneNumberMatcher(text, "IN")
         for phone_number in phone_numbers:
@@ -41,6 +42,7 @@ def get_fraud_data(rawTweets):
 
 
 def get_attributes_from_regex(regexPattern, input_string):
+    re.compile(regexPattern)
     matches = re.finditer(regexPattern, input_string, re.MULTILINE)
     attributes = []
     for match in matches:
