@@ -23,3 +23,4 @@ SOURCE = "Source"
 CONTENT = "content"
 
 MENTIONS_BATCH = 5
+TWEET_COUNT = 100
