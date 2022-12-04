@@ -37,7 +37,7 @@ if __name__ == "__main__":
     ch = int(input())
     if ch==1:
         n = input("number of tweets: ")
-        detect_fraud(0, None, None, n)
+        detect_fraud(0, None, None, int(n))
     if ch == 2:
         fromDate = input("enter from date: ")
         toDate = input("enter to date: ")
