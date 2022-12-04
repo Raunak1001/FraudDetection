@@ -87,8 +87,8 @@ def scrape_tweets(keywords1, keywords2=None, from_time=None, to_time=None, opera
             break
         
         media_content = ""
-        if tweet.media:
-            media_content = "\n"+get_data_from_media(tweet.media)
+        # if tweet.media:
+        #     media_content = "\n"+get_data_from_media(tweet.media)
 
         attributes_container.append(
             [tweet.content+media_content, '', tweet.retweetCount, tweet.likeCount, tweet.replyCount, tweet.user.username, common.TWITTER,

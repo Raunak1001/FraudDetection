@@ -23,9 +23,8 @@ if __name__ == "__main__":
     if ch == 1:
         tweets_df = scrapper.get_tweets(keywords1=common.KEYWORDS, keywords2=['number', 'mobile', 'phone', 'no', 'ph'],from_time=fromDate, to_time=toDate, n=common.TWEET_COUNT, operator=common.OPERATOR_AND, mentions=common.MENTIONS)
         print("********** Got tweets ********")
-        # tweets_df = pd.concat([tweets_df1, tweets_df2])
-        tweets_df1.to_csv('raw_data.csv')
-        extracted_df = data_converter.get_fraud_data(tweets_df1)
+        tweets_df.to_csv('raw_data.csv')
+        extracted_df = data_converter.get_fraud_data(tweets_df)
         print("******** Extracted data ******\n {0}".format(extracted_df))
         final_df = processor.process_data(extracted_df)
         final_df = final_df.sort_values(by=[common.SCORE], ascending=False)
