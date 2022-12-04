@@ -18,7 +18,7 @@ def get_fraud_data(rawTweets):
         for phone_number in phone_numbers:
             if phone_number.number.national_number in unique_phone_numbers:
                 continue
-            result_data.append([common.PHONE_NUMBER, phone_number.number.national_number, common.TWITTER, 0])
+            result_data.append([common.PHONE_NUMBER, phone_number.number.national_number, common.TWITTER, 0, ''])
             unique_phone_numbers.append(phone_number.number.national_number)
 
         fraud_mails = get_attributes_from_regex(emailRegex, text)
@@ -26,7 +26,7 @@ def get_fraud_data(rawTweets):
             for fraud_mail in fraud_mails:
                 if fraud_mail in unique_fraud_mails:
                     continue
-                result_data.append([common.EMAIL, fraud_mail, common.TWITTER, 0])
+                result_data.append([common.EMAIL, fraud_mail, common.TWITTER, 0, ''])
                 unique_fraud_mails.append(fraud_mails)
 
         fraud_vpas = get_attributes_from_regex(vpaRegex, text)
@@ -34,10 +34,10 @@ def get_fraud_data(rawTweets):
             for fraud_vpa in fraud_vpas:
                 if fraud_vpa in unique_fraud_vpas:
                     continue
-                result_data.append([common.VPA, fraud_vpa, common.TWITTER, 0])
+                result_data.append([common.VPA, fraud_vpa, common.TWITTER, 0, ''])
                 unique_fraud_vpas.append(fraud_vpa)
     return pd.DataFrame(result_data,
-                        columns=[common.IDENTIFIER_TYPE, common.IDENTIFIER_VALUE, common.SOURCE, common.SCORE])
+                        columns=[common.IDENTIFIER_TYPE, common.IDENTIFIER_VALUE, common.SOURCE, common.SCORE, common.CONTENT])
 
 
 def get_attributes_from_regex(regexPattern, input_string):

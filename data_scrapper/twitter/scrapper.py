@@ -93,3 +93,44 @@ def scrape_tweets(keywords1, keywords2=None, from_time=None, to_time=None, opera
     final_tweet_df = final_tweet_df.append(tweets_df, ignore_index=True)
     # print(final_tweet_df)
     return
+
+
+def scrape_tweets_sync(keywords1, keywords2=None, from_time=None, to_time=None, operator=None, n=None, mentions=None):
+    if operator is None or operator == '':
+        operator = common.OPERATOR_OR
+    if n is None:
+        n = 10000
+    attributes_container = []
+    query = get_query_for_list(keywords1)
+    keyword_query = get_query_for_list(keywords2)
+    if query == '':
+        query = keyword_query
+    elif keyword_query != '':
+        query = query + ' ' + operator + ' ' + keyword_query
+
+    if mentions is not None:
+        query = '(' + query + ')'
+        mention_query = get_query_for_list(mentions, '@')
+        query = query + ' AND ' + mention_query
+        mention_query = get_query_for_list(mentions, '-from:')
+        query = query + ' AND ' + mention_query
+
+    if from_time is not None and from_time != '':
+        query = query + ' AND (since:' + from_time + ')'
+
+    if to_time is not None and to_time != '':
+        query = query + ' AND (until:' + to_time + ')'
+
+    # query = query + 'AND (filter:verified)'
+
+    for i, tweet in enumerate(sntwitter.TwitterSearchScraper(query).get_items()):
+        if i > n:
+            break
+        attributes_container.append(
+            [tweet.content, '', tweet.retweetCount, tweet.likeCount, tweet.replyCount, tweet.username, common.TWITTER,
+             tweet.date])
+
+    tweets_df = pd.DataFrame(attributes_container,
+                             columns=[common.TEXT, common.IMAGE_URL, common.SHARE_COUNT, common.LIKE_COUNT,
+                                      common.REPLY_COUNT, common.USERNAME, common.PLATFROM, common.DATE])
+    return tweets_df
