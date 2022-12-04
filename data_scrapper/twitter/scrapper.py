@@ -6,7 +6,6 @@ import threading
 pd.options.mode.chained_assignment = None
 pd.set_option('display.max_colwidth', None)
 
-mentions_batch = 2
 final_tweet_df = pd.DataFrame()
 
 
@@ -35,7 +34,7 @@ def get_tweets(keywords1, keywords2=None, from_time=None, to_time=None, operator
     i = 0
     threads = []
     while i < len(mentions):
-        j = min(i + mentions_batch, len(mentions))
+        j = min(i + common.MENTIONS_BATCH, len(mentions))
         t = threading.Thread(target=scrape_tweets,
                              args=(keywords1, keywords2, from_time, to_time, operator, n, mentions[i:j],))
         threads.append(t)

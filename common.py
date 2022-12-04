@@ -21,3 +21,5 @@ IDENTIFIER_TYPE = "Identifier Type"
 IDENTIFIER_VALUE = "Identifier Value"
 SOURCE = "Source"
 CONTENT = "content"
+
+MENTIONS_BATCH = 5
