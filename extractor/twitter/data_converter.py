@@ -13,7 +13,9 @@ def get_fraud_data(rawTweets):
     unique_fraud_mails = []
     unique_fraud_vpas = []
     print("Processing",len(rawTweets.index),"tweets")
-    for _, row in rawTweets.iterrows():
+    for index, row in rawTweets.iterrows():
+        if index % 1000 == 0:
+            print("Processing",index,"th row")
         text = row[common.TEXT]
         phone_numbers = phonenumbers.PhoneNumberMatcher(text, "IN")
         for phone_number in phone_numbers:
