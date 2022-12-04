@@ -37,6 +37,7 @@ if __name__ == "__main__":
     ch = int(input())
     if ch==1:
         n = input("number of tweets: ")
+        n = int(int(n)/13)
         detect_fraud(0, None, None, int(n))
     if ch == 2:
         fromDate = input("enter from date: ")
@@ -76,11 +77,11 @@ if __name__ == "__main__":
 
     if ch == 3:
         phone_number = input("please enter the phone number to check: ")
-        result_data = [[common.PHONE_NUMBER, phone_number, common.TWITTER, 0, '', 0, 0, 0]]
+        result_data = [[common.PHONE_NUMBER, phone_number, common.TWITTER, 0, '', 0, 0, 0, 0, '']]
         final_df = processor.process_data(pd.DataFrame(result_data,
                                                        columns=[common.IDENTIFIER_TYPE, common.IDENTIFIER_VALUE,
                                                                 common.SOURCE, common.SCORE, common.CONTENT,
                                                                 common.VERIFIED_SCORE, common.FOLLOWERS_SCORE,
-                                                                common.FINAL_SCORE]))
+                                                                common.FINAL_SCORE, common.ACCURACY, common.TWEET_URL]))
         print(final_df[common.SCORE], final_df[common.VERIFIED_SCORE], final_df[common.FOLLOWERS_SCORE],
               final_df[common.FINAL_SCORE])
