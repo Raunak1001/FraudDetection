@@ -31,17 +31,17 @@ def detect_fraud(count, fromDate, toDate, n):
 
 if __name__ == "__main__":
     print("____menu_____")
-    print("1: number of tweets fo consider for analysis: ")
-    print("2: date range detection")
-    print("3: targeted fraud detection")
+    print("1: Number of tweets analysis")
+    print("2: Date Range Analysis")
+    print("3: Targeted Fraud Detection")
     ch = int(input())
     if ch==1:
-        n = input("number of tweets: ")
+        n = input("Enter the number of tweets: ")
         n = int(int(n)/13)
         detect_fraud(0, None, None, int(n))
     if ch == 2:
-        fromDate = input("enter from date: ")
-        toDate = input("enter to date: ")
+        fromDate = input("Enter from date: ")
+        toDate = input("Enter to date: ")
         from_time = datetime.datetime.strptime(fromDate, '%Y-%m-%d').date()
         to_time = datetime.datetime.strptime(toDate, '%Y-%m-%d').date()
         new_to_time = from_time
@@ -76,7 +76,7 @@ if __name__ == "__main__":
         time.sleep(0.25)
 
     if ch == 3:
-        phone_number = input("please enter the phone number to check: ")
+        phone_number = input("Enter the identifier for detection:")
         result_data = [[common.PHONE_NUMBER, phone_number, common.TWITTER, 0, '', 0, 0, 0, 0, '']]
         final_df = processor.process_data(pd.DataFrame(result_data,
                                                        columns=[common.IDENTIFIER_TYPE, common.IDENTIFIER_VALUE,
