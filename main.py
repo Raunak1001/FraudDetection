@@ -37,7 +37,7 @@ if __name__ == "__main__":
         extracted_df.to_csv('extracted_data.csv')
         print("******** Extracted data ********")
         final_df = processor.process_data(extracted_df)
-        final_df = final_df.sort_values(by=[common.SCORE], ascending=False)
+        final_df = final_df.sort_values(by=[common.FINAL_SCORE], ascending=False)
         final_df.to_csv('file1.csv')
         print("****** Final output ready ******")
     if ch == 2:
