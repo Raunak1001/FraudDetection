@@ -12,11 +12,15 @@ def get_fraud_data(rawTweets):
     unique_phone_numbers = []
     unique_fraud_mails = []
     unique_fraud_vpas = []
+    print("Processing",len(rawTweets.index),"tweets")
     for _, row in rawTweets.iterrows():
         text = row[common.TEXT]
         phone_numbers = phonenumbers.PhoneNumberMatcher(text, "IN")
         for phone_number in phone_numbers:
             if phone_number.number.national_number in unique_phone_numbers:
+                continue
+            if str(phone_number.number.national_number)[:4:] == "1800":
+                print("Ignoring Toll Free Number:",phone_number.number.national_number)
                 continue
             result_data.append([common.PHONE_NUMBER, phone_number.number.national_number, common.TWITTER, 0, '', 0, 0, 0])
             unique_phone_numbers.append(phone_number.number.national_number)
