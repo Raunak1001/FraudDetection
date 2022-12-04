@@ -5,7 +5,7 @@ import phonenumbers
 
 emailRegex = "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
 vpaRegex = "^([a-zA-Z0-9]+([\-.]*[a-zA-Z0-9]+)*)@([a-zA-Z0-9]+([\-.]{1}[a-zA-Z0-9]+)*)$"
-whiteList = ["1800", "1860","9820810007","7440006709", "8585063104", "8800688006", "9836513000"]
+whiteList = ["7","8","9"]
 
 def get_fraud_data(rawTweets):
     result_data = []
@@ -21,7 +21,7 @@ def get_fraud_data(rawTweets):
         for phone_number in phone_numbers:
             if phone_number.number.national_number in unique_phone_numbers:
                 continue
-            if str(phone_number.number.national_number)[:4:] in whiteList or str(phone_number.number.national_number) in whiteList:
+            if str(phone_number.number.national_number)[:1:] in whiteList:
                 continue
             result_data.append([common.PHONE_NUMBER, phone_number.number.national_number, common.TWITTER, 0,'', 0, 0, 0, '', ''])
             unique_phone_numbers.append(phone_number.number.national_number)
