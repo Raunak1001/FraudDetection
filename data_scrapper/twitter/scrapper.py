@@ -98,7 +98,7 @@ def scrape_tweets(keywords1, keywords2=None, from_time=None, to_time=None, opera
 
     tweets_df = pd.DataFrame(attributes_container,
                              columns=[common.TEXT, common.IMAGE_URL, common.SHARE_COUNT, common.LIKE_COUNT,
-                                      common.REPLY_COUNT, common.USERNAME, common.PLATFROM, common.DATE])
+                                      common.REPLY_COUNT, common.USERNAME, common.PLATFROM, common.DATE, common.VERIFIED, common.FOLLOWER_COUNT])
     # pd.concat(final_tweet_df, tweets_df)
     final_tweet_df = final_tweet_df.append(tweets_df, ignore_index=True)
     return
