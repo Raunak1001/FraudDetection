@@ -83,5 +83,4 @@ if __name__ == "__main__":
                                                                 common.SOURCE, common.SCORE, common.CONTENT,
                                                                 common.VERIFIED_SCORE, common.FOLLOWERS_SCORE,
                                                                 common.FINAL_SCORE, common.ACCURACY, common.TWEET_URL]))
-        print(final_df[common.SCORE], final_df[common.VERIFIED_SCORE], final_df[common.FOLLOWERS_SCORE],
-              final_df[common.FINAL_SCORE])
+        print(final_df[common.ACCURACY])
