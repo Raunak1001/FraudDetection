@@ -11,6 +11,8 @@ def process_data(extracted_df):
     threads = []
     i = 0
     for ind, row in extracted_df.iterrows():
+        if ind % 1000 == 0:
+            print("Processing",ind,"th row")
         t = threading.Thread(target=process_parallel, args=(row, extracted_df, ind))
         threads.append(t)
         i = i + 1
